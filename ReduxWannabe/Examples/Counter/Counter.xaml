@@ -1,0 +1,20 @@
+﻿<UserControl x:Class="ReduxWannabe.Examples.CounterApp.CounterAppMainView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:counterapp="clr-namespace:ReduxWannabe.Examples.CounterApp">
+    <UserControl.DataContext>
+        <counterapp:CounterDataContext />
+    </UserControl.DataContext>
+    <StackPanel HorizontalAlignment="Center"
+                VerticalAlignment="Center"
+                Orientation="Vertical">
+        <TextBlock Margin="5"
+                   Text="{Binding Store.Value}" />
+        <Button Margin="5"
+                Command="{Binding IncCmd}"
+                Content="+" />
+        <Button Margin="5"
+                Command="{Binding DecCmd}"
+                Content="-" />
+    </StackPanel>
+</UserControl>

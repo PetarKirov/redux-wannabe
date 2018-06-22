@@ -1,0 +1,11 @@
+﻿<Window x:Class="ReduxWannabe.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:counterappExample="clr-namespace:ReduxWannabe.Examples.CounterApp"
+        xmlns:todoAppExample="clr-namespace:ReduxWannabe.Examples.TodoApp"
+        Title="MainWindow"
+        Width="800"
+        Height="450">
+    <!--<counterappExample:CounterAppMainView />-->
+    <todoAppExample:TodoAppMainView />
+</Window>
