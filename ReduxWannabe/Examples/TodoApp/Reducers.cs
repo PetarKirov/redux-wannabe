@@ -12,9 +12,29 @@ namespace ReduxWannabe.Examples.TodoApp
     {
         public static ApplicationState ReduceApplication(ApplicationState previousState, IAction action)
         {
+            var filter = action is FilterTodosAction filterAction ?
+                filterAction.Filter : previousState.Filter;
+            var allTodos = TodosReducer(previousState.AllTodos, action);
+            var completeAllIsChecked = allTodos.All(x => x.IsCompleted);
+            var completeAllIsVisible = allTodos.Any();
+            var clearTodosIsVisible = allTodos.Any(todo => todo.IsCompleted);
+            var areFiltersVisible = allTodos.Any();
+            var count = allTodos.Count(todo => !todo.IsCompleted);
+            var items = count == 1 ? "item" : "items";
+            var activeTodosCounterMessage = $"{count} {items} left";
+            var filteredTodos = filter != TodosFilter.All ?
+                allTodos.Where(t => t.IsCompleted == (filter == TodosFilter.Completed)) :
+                allTodos;
+
             return new ApplicationState(
-                action is FilterTodosAction filterAction ? filterAction.Filter : previousState.Filter,
-                TodosReducer(previousState.AllTodos, action));
+                allTodos: allTodos,
+                filter: filter,
+                filteredTodos: filteredTodos,
+                completeAllIsChecked: completeAllIsChecked,
+                completeAllIsVisible: completeAllIsVisible,
+                clearTodosIsVisible: clearTodosIsVisible,
+                activeTodosCounterMessage: activeTodosCounterMessage,
+                areFiltersVisible: areFiltersVisible);
         }
 
         public static ImmutableArray<Todo> TodosReducer(ImmutableArray<Todo> previousState, IAction action)

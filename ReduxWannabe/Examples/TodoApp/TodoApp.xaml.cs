@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Immutable;
 
 using ReduxWannabe.Core;
@@ -18,7 +18,7 @@ namespace ReduxWannabe.Examples.TodoApp
         public IStore<ApplicationState> Store { get; } =
             new Store<ApplicationState>(
                 ReduceApplication,
-                new ApplicationState(TodosFilter.All, ImmutableArray.Create<Todo>()));
+                ApplicationState.Initial);
 
         public RXParamCommand<string> AddTodoCmd { get; }
         public RXParamCommand<Guid> DeleteTodoCmd { get; }

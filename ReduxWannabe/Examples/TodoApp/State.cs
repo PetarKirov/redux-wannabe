@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
@@ -7,23 +7,7 @@ namespace ReduxWannabe.Examples.TodoApp.State
 {
     public class ApplicationState
     {
-        public ApplicationState(TodosFilter filter, ImmutableArray<Todo> todos)
-        {
-            Filter = filter;
-            AllTodos = todos;
-            FilteredTodos = filter == TodosFilter.All ?
-                AllTodos :
-                AllTodos.Where(t => t.IsCompleted == (filter == TodosFilter.Completed));
-            CompleteAllIsChecked = AllTodos.All(x => x.IsCompleted);
-            CompleteAllIsVisible = AllTodos.Any();
-            ClearTodosIsVisible = AllTodos.Any(todo => todo.IsCompleted);
-            AreFiltersVisible = AllTodos.Any();
-
-            var count = AllTodos.Count(todo => !todo.IsCompleted);
-            var items = count == 1 ? "item" : "items";
-            ActiveTodosCounterMessage = $"{count} {items} left";
-        }
-
+        // The minimal application state:
         public ImmutableArray<Todo> AllTodos { get; }
         public TodosFilter Filter { get; }
 
@@ -35,9 +19,39 @@ namespace ReduxWannabe.Examples.TodoApp.State
         public bool ClearTodosIsVisible { get; }
         public string ActiveTodosCounterMessage { get; }
         public bool AreFiltersVisible { get; }
+
+        public ApplicationState(
+            ImmutableArray<Todo> allTodos,
+            TodosFilter filter,
+            IEnumerable<Todo> filteredTodos,
+            bool completeAllIsChecked,
+            bool completeAllIsVisible,
+            bool clearTodosIsVisible,
+            string activeTodosCounterMessage,
+            bool areFiltersVisible)
+        {
+            AllTodos = allTodos;
+            Filter = filter;
+            FilteredTodos = filteredTodos;
+            CompleteAllIsChecked = completeAllIsChecked;
+            CompleteAllIsVisible = completeAllIsVisible;
+            ClearTodosIsVisible = clearTodosIsVisible;
+            ActiveTodosCounterMessage = activeTodosCounterMessage;
+            AreFiltersVisible = areFiltersVisible;
+        }
+
+        public static ApplicationState Initial { get; } = new ApplicationState(
+            ImmutableArray.Create<Todo>(),
+            TodosFilter.All,
+            Enumerable.Empty<Todo>(),
+            false,
+            false,
+            false,
+            string.Empty,
+            false);
     }
 
-    public class Todo
+    public struct Todo
     {
         public string Text { get; }
         public bool IsCompleted { get; }
